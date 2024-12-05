@@ -49,7 +49,7 @@ class ValidateSingleEpoch:
             will be the same keys required by the criterion. 
         """
 
-        losses = torch.tensor(0)
+        losses = torch.tensor(0.0, dtype=torch.float32)
         denom = torch.tensor(0)
         if gpu:
             _device = "cuda"
@@ -91,7 +91,7 @@ class ValidateSingleEpoch:
 
                 # Logs
                 val_loss = criterion(output, output_vals)
-                losses += val_loss.detach().cpu()
+                losses += val_loss.detach().cpu().float()
                 denom += 1
                 if self.cache_preds:
                     preds.append({k:output[k].detach().cpu() for k in output.keys()})
