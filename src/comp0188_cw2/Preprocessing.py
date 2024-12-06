@@ -82,13 +82,13 @@ def main():
         test_dh.create()
 
     process_data_lkp = {
-        "front_cam_ob": lambda x: to_greyscale(x.astype(int)).astype(np.float16),
-        "mount_cam_ob": lambda x: to_greyscale(x.astype(int)).astype(np.float16),
-        "actions": lambda x: x.astype(np.float16),
+        "front_cam_ob": lambda x: to_greyscale(x.astype(int)).astype(np.float32),
+        "mount_cam_ob": lambda x: to_greyscale(x.astype(int)).astype(np.float32),
+        "actions": lambda x: x.astype(np.float32),
         "terminals": lambda x: x,
-        "ee_cartesian_pos_ob": lambda x: x.astype(np.float16),
-        "ee_cartesian_vel_ob": lambda x: x.astype(np.float16),
-        "joint_pos_ob": lambda x: x[:,-2:].astype(np.float16)
+        "ee_cartesian_pos_ob": lambda x: x.astype(np.float32),
+        "ee_cartesian_vel_ob": lambda x: x.astype(np.float32),
+        "joint_pos_ob": lambda x: x[:,-2:].astype(np.float32)
     }
 
     train_index_chunks = np.array_split(
