@@ -27,8 +27,7 @@ class TrackerBalancedLoss:
     def __call__(
         self, 
         pred:Dict[str, torch.Tensor],
-        act:Dict[str, torch.Tensor],
-        loss_weights: Dict[str, float]
+        act:Dict[str, torch.Tensor]
         ) -> torch.Tensor:
         """Evaluates the input values against the loss functions specified in
         the init.
@@ -55,7 +54,7 @@ class TrackerBalancedLoss:
                 "label":f"step_{self.__step}",
                 "value":_loss
             }
-            loss += loss_weights[key] * _loss
+            loss += _loss
         if self.mo is not None:
             self.mo.update_metrics(metric_value_dict=_metric_value_dict)
         out_loss = torch.mean(loss)
