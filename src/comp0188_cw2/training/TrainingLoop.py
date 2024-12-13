@@ -109,14 +109,14 @@ def train(
         logger.info("Running training epoch")
         train_loss_val, train_preds =  train_epoch_func(
             model=model, data_loader=train_data_loader, gpu=gpu,
-            optimizer=optimizer, criterion=criterion,logger=logger, loss_weights=loss_weights)
+            optimizer=optimizer, criterion=criterion,logger=logger)
         epoch_train_loss = train_loss_val.numpy()
 
         logger.info("epoch {}\t training loss : {}".format(
                 epoch, epoch_train_loss))
         val_loss_val, val_preds = val_epoch_func(
             model=model, data_loader=val_data_loader, gpu=gpu,
-            criterion=val_criterion, loss_weights=loss_weights)
+            criterion=val_criterion)
 
         epoch_val_loss = val_loss_val.numpy()
         logger.info("Running validation")
