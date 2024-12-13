@@ -35,7 +35,8 @@ def train(
     mo: WandBMetricOrchestrator = WandBMetricOrchestrator(),
     val_criterion:Optional[CriterionProtocol] = None,
     preds_save_type:Optional[Literal["pickle","csv"]] = None,
-    output_dir:Optional[str] = None
+    output_dir:Optional[str] = None, 
+    loss_weights: Optional[Dict[str, float]] = None
     ) -> Tuple[WandBMetricOrchestrator,int]:
     """Function to run training and validation specified by the objects 
     assigned to train_epoch_func and val_epoch_func.
@@ -101,19 +102,21 @@ def train(
     if val_criterion is None:
         val_criterion = criterion
 
+    if loss_weights is not None:
+            assert all(key in criterion for key in loss_weights)
 
     for epoch in np.arange(1,epochs+1):
         logger.info("Running training epoch")
         train_loss_val, train_preds =  train_epoch_func(
             model=model, data_loader=train_data_loader, gpu=gpu,
-            optimizer=optimizer, criterion=criterion,logger=logger)
+            optimizer=optimizer, criterion=criterion,logger=logger, loss_weights=loss_weights)
         epoch_train_loss = train_loss_val.numpy()
 
         logger.info("epoch {}\t training loss : {}".format(
                 epoch, epoch_train_loss))
         val_loss_val, val_preds = val_epoch_func(
             model=model, data_loader=val_data_loader, gpu=gpu,
-            criterion=val_criterion)
+            criterion=val_criterion, loss_weights=loss_weights)
 
         epoch_val_loss = val_loss_val.numpy()
         logger.info("Running validation")
